@@ -11,4 +11,5 @@ module "vpc" {
   isPeering_required = true
   requester_vpc_id = data.aws_vpc.default.id
   default_route_table_id = data.aws_vpc.default.main_route_table_id
+  default_cidr_block = data.aws_vpc.default.cidr_block
 }

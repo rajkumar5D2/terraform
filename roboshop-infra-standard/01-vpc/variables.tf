@@ -10,6 +10,7 @@ variable "common_tags" {
   default = {
     Name = "Roboshop"
     Environment = "Dev"
+   component = "vpn"
     terraform = true
   }
 }

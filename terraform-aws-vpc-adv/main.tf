@@ -51,13 +51,20 @@ resource "aws_subnet" "database" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
 
-  route {
-    cidr_block = "0.0.0.0/0" #giving route open to all internet
-    gateway_id = aws_internet_gateway.main.id
-  }
+  # route {
+  #   cidr_block = "0.0.0.0/0" #giving route open to all internet
+  #   gateway_id = aws_internet_gateway.main.id
+  # }
   tags = merge(var.common_tags,{
     Name = "${var.project_name}-public-route"
   })
+}
+
+#giving route seperately
+resource "aws_route" "public" {
+  route_table_id = aws_route_table.public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.main.id
 }
 
 #defining elastic ip
@@ -82,25 +89,38 @@ resource "aws_nat_gateway" "nat" {
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.vpc.id
 
-  route {
-    cidr_block = "0.0.0.0/0" #giving route open to all internet
-    nat_gateway_id = aws_nat_gateway.nat.id
-  }
+  # route {
+  #   cidr_block = "0.0.0.0/0" #giving route open to all internet
+  #   nat_gateway_id = aws_nat_gateway.nat.id
+  # }
   tags = merge(var.common_tags,{
     Name = "${var.project_name}-private-route"
   })
+}
+#giving route seperately
+resource "aws_route" "private" {
+  route_table_id = aws_route_table.private.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.nat.id
 }
 
 resource "aws_route_table" "database" {
   vpc_id = aws_vpc.vpc.id
 
-  route {
-    cidr_block = "0.0.0.0/0" #giving route open to all internet
-    nat_gateway_id = aws_nat_gateway.nat.id
-  }
+  # route {
+  #   cidr_block = "0.0.0.0/0" #giving route open to all internet
+  #   nat_gateway_id = aws_nat_gateway.nat.id
+  # }
   tags = merge(var.common_tags,{
     Name = "${var.project_name}-database-route"
   })
+}
+
+#giving route seperately
+resource "aws_route" "database" {
+  route_table_id = aws_route_table.database.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id = aws_nat_gateway.nat.id
 }
 
 resource "aws_route_table_association" "public_association" {
@@ -147,17 +167,4 @@ resource "aws_db_subnet_group" "roboshop" {
   tags = {
     Name = "My DB subnet group"
   }
-}
-
-#vpc peering code, if required employee set is Peering_required = true to execute this code
-resource "aws_vpc_peering_connection" "peering" {
-  # peer_owner_id = var.peer_owner_id----account id not required
-  count = var.isPeering_required ? 1 : 0
-  peer_vpc_id   = aws_vpc.vpc.id # accepter, which is roboshop vpc public subnet 
-  vpc_id        = var.requester_vpc_id # requester, which is default vpc
-  auto_accept   = true
-
-  tags = merge({
-    Name = "vpc peering between default vpc and ${var.project_name}"
-  }, var.common_tags)
 }

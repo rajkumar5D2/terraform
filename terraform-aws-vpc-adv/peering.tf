@@ -13,8 +13,33 @@ resource "aws_vpc_peering_connection" "peering" {
 }
 
 resource "aws_route" "default_to_public_cidr" {
+  count = var.isPeering_required ? 1 : 0
   route_table_id            = var.default_route_table_id #employee will give
   destination_cidr_block    = var.cidr_block # employee will give
-  vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
+  vpc_peering_connection_id = aws_vpc_peering_connection.peering[count.index].id
+#   depends_on                = [aws_route_table.testing] not required
+}
+
+resource "aws_route" "public_rt_to_default_cidr" {
+  count = var.isPeering_required ? 1 : 0
+  route_table_id            = aws_route_table.public.id #employee will give, giving public route table id as requester
+  destination_cidr_block    = var.default_cidr_block # employee will give, giving defssult route table cidr as accepter
+  vpc_peering_connection_id = aws_vpc_peering_connection.peering[count.index].id
+#   depends_on                = [aws_route_table.testing] not required
+}
+
+resource "aws_route" "private_rt_to_default_cidr" {
+  count = var.isPeering_required ? 1 : 0
+  route_table_id            = aws_route_table.private.id #employee will give, giving public route table id as requester
+  destination_cidr_block    = var.default_cidr_block # employee will give, giving defssult route table cidr as accepter
+  vpc_peering_connection_id = aws_vpc_peering_connection.peering[count.index].id
+#   depends_on                = [aws_route_table.testing] not required
+}
+
+resource "aws_route" "database_rt_to_default_cidr" {
+  count = var.isPeering_required ? 1 : 0
+  route_table_id            = aws_route_table.database.id #employee will give, giving public route table id as requester
+  destination_cidr_block    = var.default_cidr_block # employee will give, giving defssult route table cidr as accepter
+  vpc_peering_connection_id = aws_vpc_peering_connection.peering[count.index].id
 #   depends_on                = [aws_route_table.testing] not required
 }

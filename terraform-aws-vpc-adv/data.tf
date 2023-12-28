@@ -3,6 +3,3 @@ data "aws_availability_zones" "available" { #GETTING ALL AVAILABILITY ZONES and 
   state = "available"
 }
 
-data "aws_vpc" "default" {
-  default = true
-} 

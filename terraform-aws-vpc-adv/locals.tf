@@ -2,9 +2,9 @@ locals { #restricting only for 2 azs and passing to outputs.tf to send to employ
   azs_vpc_local = slice(data.aws_availability_zones.available.names,0,2)
 }
 
-locals {
-  default_vpc_id = data.aws_vpc.default.id
-}
+# locals {
+#   default_vpc_id = data.aws_vpc.default.id
+# }
 
 # #getting value from vpc(roboshop) created
 # locals {
