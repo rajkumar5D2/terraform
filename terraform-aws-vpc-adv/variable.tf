@@ -84,3 +84,16 @@ variable "nat_gateway_tags" {
 # variable "database_route_table_tags" {
   
 # }
+
+#developing peering module
+variable "isPeering_required" {
+  default = false
+}
+
+variable "requester_vpc_id" {
+
+}
+
+variable "default_route_table_id" {
+  
+}

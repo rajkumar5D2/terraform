@@ -7,4 +7,8 @@ module "vpc" {
   public_subnet_cidr = var.public_subnet_cidr
   private_subnet_cidr = var.private_subnet_cidr
   database_subnet_cidr = var.database_subnet_cidr
+  #peering config, telling module to that i want peering
+  isPeering_required = true
+  requester_vpc_id = data.aws_vpc.default.id
+  default_route_table_id = data.aws_vpc.default.main_route_table_id
 }
