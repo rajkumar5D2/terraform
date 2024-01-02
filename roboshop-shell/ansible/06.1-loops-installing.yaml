@@ -1,0 +1,12 @@
+- name: installinh services using loop
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: installing
+      ansible.builtin.yum:
+        name: "{{item.name}}"
+        state: "{{item.state}}"
+      loop:
+        - { name: "nginx", state: "absent" }
+        - { name: "postfix", state: "installed" }
+        - { name: "mailx", state: "installed" }
