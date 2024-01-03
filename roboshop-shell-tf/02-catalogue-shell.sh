@@ -48,7 +48,7 @@ validate $? "unziped"
 npm install &>>LOGPATH
 validate $? "installed npm"
 
-cp /home/centos/Devops/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>>LOGPATH
+cp /home/centos/terraform/roboshop-shell-tf/catalogue.service /etc/systemd/system/catalogue.service &>>LOGPATH
 validate $? "copied catalogue.service"
 
 systemctl daemon-reload &>>LOGPATH
@@ -60,11 +60,11 @@ validate $? "enabled"
 systemctl start catalogue &>>LOGPATH
 validate $? "started"
 
-cp /home/centos/Devops/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>>LOGPATH
+cp /home/centos/terraform/roboshop-shell-tf/mongo.repo /etc/yum.repos.d/mongo.repo &>>LOGPATH
 validate $? "copied mongod to mongo.repo"
 
 yum install mongodb-org-shell -y &>>LOGPATH
 validate $? "installed mongod client"
 
-mongo --host 18.212.244.44 </app/schema/catalogue.js &>>LOGPATH
+mongo --host mongodb.mydomainproject.tech </app/schema/catalogue.js &>>LOGPATH
 validate $? "connected to mongod server"

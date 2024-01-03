@@ -20,7 +20,7 @@ resource "aws_lb_target_group" "catalogue" {
 
 
 #creating launch template
-resource "aws_launch_template" "foo" {
+resource "aws_launch_template" "catalogue" {
   name = "${var.project_name}-${var.common_tags.component}"
 
   # block_device_mappings {
@@ -61,7 +61,7 @@ resource "aws_launch_template" "foo" {
   #   name = "test"
   # }
 
-  image_id = data.aws_ami.ami_id.value
+  image_id = data.aws_ami.ami_id.id
 
   instance_initiated_shutdown_behavior = "terminate"
 
@@ -110,5 +110,52 @@ resource "aws_launch_template" "foo" {
     }
   }
 
-  # user_data = filebase64("${path.module}/example.sh")
+  user_data = filebase64("${path.module}/catalogue.sh")
+}
+
+#creating auto_scaling_group
+
+resource "aws_autoscaling_group" "catalogue" {
+  name                      = "${var.project_name}-${var.common_tags.component}"
+  max_size                  = 5
+  min_size                  = 2
+  health_check_grace_period = 300
+  health_check_type         = "ELB"
+  desired_capacity          = 2
+  # force_delete            = true
+  # placement_group         = aws_placement_group.test.id
+  launch_template  {
+    id = aws_launch_template.catalogue.id
+    version = "$Latest"
+    }
+  vpc_zone_identifier       = split(",",data.aws_ssm_parameter.private_subnet_ids.value)
+
+  # instance_maintenance_policy {
+  #   min_healthy_percentage = 90
+  #   max_healthy_percentage = 120
+  # }
+
+  # initial_lifecycle_hook {
+  #   name                 = "foobar"
+  #   default_result       = "CONTINUE"
+  #   heartbeat_timeout    = 2000
+  #   lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
+
+  #   notification_metadata = jsonencode({
+  #     foo = "bar"
+  #   })
+
+  #   notification_target_arn = "arn:aws:sqs:us-east-1:444455556666:queue1*"
+  #   role_arn                = "arn:aws:iam::123456789012:role/S3Access"
+  # }
+
+  tag {
+    key                 = "Name"
+    value               = "catalogue"
+    propagate_at_launch = true
+  }
+
+  timeouts {
+    delete = "15m"
+  }
 }
