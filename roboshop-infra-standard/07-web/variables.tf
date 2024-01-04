@@ -1,7 +1,3 @@
-# variable "sg_ingress" {
-  
-# }
-
 variable "project_name" {
   default = "roboshop"
 }
@@ -12,22 +8,21 @@ variable "environment" {
 variable "common_tags" {
   default = {
     Name = "Roboshop"
-    component = "catalogue"
+    component = "web"
     terraform = true
   }
 }
 
-
 variable "port" {
-  default = 8080
+default = 80
 }
 variable "protocol" {
   default = "HTTP"
 }
 
-variable "vpc_id" {
-  default = ""
-}
+# variable "vpc_id" {
+#   default = ""
+# }
 
 variable "health_check" {
   default = {  enabled = true

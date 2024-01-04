@@ -12,7 +12,7 @@ variable "environment" {
 variable "common_tags" {
   default = {
     # Name = "Roboshop"
-     component = "catalogue"
+     component = "web-alb"
     terraform = true
   }
 }

@@ -3,23 +3,17 @@
 # }
 
 variable "project_name" {
-  default = "roboshop"
+  default = ""
 }
 
 variable "environment" {
-  default = "dev"
+  default = ""
 }
 variable "common_tags" {
-  default = {
-    Name = "Roboshop"
-    component = "catalogue"
-    terraform = true
-  }
+  
 }
-
-
 variable "port" {
-  default = 8080
+  default = 80
 }
 variable "protocol" {
   default = "HTTP"
@@ -34,8 +28,8 @@ variable "health_check" {
     healthy_threshold = 2
     interval = 15
     matcher = "200-299"
-    path = "/"
-    port = 80
+    path = "/health"
+    port = 8080
     protocol = "HTTP"
     timeout = 5
     unhealthy_threshold = 3}

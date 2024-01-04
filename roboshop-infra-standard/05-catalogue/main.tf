@@ -1,21 +1,31 @@
-#creating a target group of catalogue
-resource "aws_lb_target_group" "catalogue" {
-  name        = "${var.project_name}-${var.common_tags.component}"
-  # target_type = "alb"
-  port        = 8080
-  protocol    = "HTTP"
-  vpc_id      = data.aws_ssm_parameter.vpc_id.value
-  health_check {
-    enabled = true
-    healthy_threshold = 2
-    interval = 15
-    matcher = "200-299"
-    path = "/health"
-    port = 8080
-    protocol = "HTTP"
-    timeout = 5
-    unhealthy_threshold = 3
-  }
+#-----commenting here coz made a module in roboshop-template-app----------------
+# #creating a target group of catalogue
+# resource "aws_lb_target_group" "catalogue" {
+#   name        = "${var.project_name}-${var.common_tags.component}"
+#   # target_type = "alb"
+#   port        = 8080
+#   protocol    = "HTTP"
+#   vpc_id      = data.aws_ssm_parameter.vpc_id.value
+#   health_check {
+#     enabled = true
+#     healthy_threshold = 2
+#     interval = 15
+#     matcher = "200-299"
+#     path = "/health"
+#     port = 8080
+#     protocol = "HTTP"
+#     timeout = 5
+#     unhealthy_threshold = 3
+#   }
+# }
+module "target_group" {
+  source = "../../roboshop-template-app"
+  project_name = var.project_name
+   port        = var.port
+  protocol    = var.protocol
+  vpc_id      = var.vpc_id
+   common_tags = var.common_tags
+    health_check = var.health_check
 }
 
 
@@ -113,7 +123,7 @@ resource "aws_launch_template" "catalogue" {
   user_data = filebase64("${path.module}/catalogue.sh")
 }
 
-#creating auto_scaling_group
+#creating auto_scaling_group and also creating catalogue instances and placing them in target group
 
 resource "aws_autoscaling_group" "catalogue" {
   name                      = "${var.project_name}-${var.common_tags.component}"
@@ -124,6 +134,7 @@ resource "aws_autoscaling_group" "catalogue" {
   desired_capacity          = 2
   # force_delete            = true
   # placement_group         = aws_placement_group.test.id
+  target_group_arns = [module.target_group.arn]
   launch_template  {
     id = aws_launch_template.catalogue.id
     version = "$Latest"
@@ -159,3 +170,37 @@ resource "aws_autoscaling_group" "catalogue" {
     delete = "15m"
   }
 }
+
+#adding auto_scaling_policy to the auto_scaling
+
+resource "aws_autoscaling_policy" "bat" {
+  name                   = "cpu"
+  # scaling_adjustment     = 4
+  policy_type            = "TargetTrackingScaling"
+  # cooldown               = 300
+  autoscaling_group_name = aws_autoscaling_group.catalogue.name
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 50.0
+  }
+}
+
+#listener rule
+resource "aws_lb_listener_rule" "catalogue" {
+  listener_arn = data.aws_ssm_parameter.app-alb_listener_arn.value
+  priority     = 10
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.catalogue.arn
+  }
+
+  condition {
+  host_header {
+    values = ["catalogue.app.mydomainproject.tech"]
+   }
+  }
+}
+

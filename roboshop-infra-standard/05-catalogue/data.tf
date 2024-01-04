@@ -30,3 +30,7 @@ data "aws_ami" "ami_id" {
 data "aws_ssm_parameter" "catalogue_sg_id" {
   name = "/${var.project_name}/${var.environment}/catalogue_sg_id"
 }
+
+data "aws_ssm_parameter" "app-alb_listener_arn" {
+  name = "/${var.project_name}/${var.environment}/app-alb_listener_arn"
+}
