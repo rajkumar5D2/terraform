@@ -35,3 +35,31 @@ variable "health_check" {
     timeout = 5
     unhealthy_threshold = 3}
 }
+
+variable "launch_template_tags" {
+  default = [
+    {
+      resource_type = "instance"
+      tags = {
+        Name = "web"
+      }
+    },
+    {
+      resource_type = "volume"
+      tags = {
+        Name = "web"
+      }
+    }
+  ]
+}
+
+variable "auto_scalling_tags" {
+  default = [
+    {
+        key                 = "Name"
+        value               = "web"
+        propagate_at_launch = true
+    }
+    
+  ]
+}

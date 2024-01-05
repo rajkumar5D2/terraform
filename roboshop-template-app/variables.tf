@@ -51,10 +51,37 @@ variable "vpc_security_group_ids" {
 
 }
 
-variable "launch_specification" {
-  default = []
-}
-
 variable "user_data" {
   default = ""
+}
+
+variable "launch_template_tags" {
+  default = [
+ 
+  ]
+}
+
+#for auto-scalling groups
+variable "max_size" {
+  default = 5
+}
+variable "min_size" {
+  default = 1
+}
+variable "desired_capacity" {
+  default = 2
+}
+variable "health_check_grace_period" {
+  default = 120
+}
+variable "health_check_type" {
+  default = "ELB"
+}
+
+variable "vpc_zone_identifier" {
+type = list
+}
+
+variable "tags" {
+  default = []
 }

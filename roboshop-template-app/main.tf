@@ -29,23 +29,44 @@ resource "aws_launch_template" "main" {
 
   instance_type = var.instance_type
 
-
   vpc_security_group_ids =[var.vpc_security_group_ids]
 
-  # tag_specifications {
-  #   resource_type = var.tag_specifications.resource_type
-  #   tags = {
-  #     Name = var.tag_specifications.tag.Name
-  #   }
-  # }
-
   dynamic tag_specifications {
-    for_each = var.launch_specification
+    for_each = var.launch_template_tags
     content {
       resource_type = tag_specifications.value["resource_type"]
       tags = tag_specifications.value["tags"]
     }
   }
   user_data = var.user_data
+}
+
+#creating auto-scalling groups
+resource "aws_autoscaling_group" "main" {
+  name                      = "${var.project_name}-${var.common_tags.component}"
+  max_size                  = var.max_size
+  min_size                  = var.min_size
+  health_check_grace_period = var.health_check_grace_period
+  health_check_type         = var.health_check_type
+  desired_capacity          = var.desired_capacity
+  target_group_arns = [aws_lb_target_group.main.arn]
+  launch_template  {
+    # id = aws_launch_template.catalogue.id
+    id = aws_launch_template.main.id
+    version = "$Latest"
+    }
+  # vpc_zone_identifier       = split(",",data.aws_ssm_parameter.private_subnet_ids.value)
+  vpc_zone_identifier = var.vpc_zone_identifier
+
+  dynamic tag {
+    for_each = var.tags
+    content {
+      key = tag.value["key"]
+      value = tag.value["value"]
+      propagate_at_launch = tag.value["propagate_at_launch"]
+ 
+  }
+
+}
 }
 

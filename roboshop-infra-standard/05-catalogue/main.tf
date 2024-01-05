@@ -127,11 +127,11 @@ resource "aws_launch_template" "catalogue" {
 
 resource "aws_autoscaling_group" "catalogue" {
   name                      = "${var.project_name}-${var.common_tags.component}"
-  max_size                  = 5
-  min_size                  = 2
+  max_size                  = 1
+  min_size                  = 1
   health_check_grace_period = 300
   health_check_type         = "ELB"
-  desired_capacity          = 2
+  desired_capacity          = 1
   # force_delete            = true
   # placement_group         = aws_placement_group.test.id
   target_group_arns = [aws_lb_target_group.catalogue.arn]
@@ -174,7 +174,7 @@ resource "aws_autoscaling_group" "catalogue" {
 
 #adding auto_scaling_policy to the auto_scaling
 
-resource "aws_autoscaling_policy" "bat" {
+resource "aws_autoscaling_policy" "catalogue" {
   name                   = "cpu"
   # scaling_adjustment     = 4
   policy_type            = "TargetTrackingScaling"
