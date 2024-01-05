@@ -17,3 +17,35 @@ resource "aws_lb_target_group" "main" {
     unhealthy_threshold = var.health_check.unhealthy_threshold
   }
 }
+
+
+#creating launch template
+resource "aws_launch_template" "main" {
+  name = "${var.project_name}-${var.common_tags.component}"
+
+  image_id = var.image_id
+
+  instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
+
+  instance_type = var.instance_type
+
+
+  vpc_security_group_ids =[var.vpc_security_group_ids]
+
+  # tag_specifications {
+  #   resource_type = var.tag_specifications.resource_type
+  #   tags = {
+  #     Name = var.tag_specifications.tag.Name
+  #   }
+  # }
+
+  dynamic tag_specifications {
+    for_each = var.launch_specification
+    content {
+      resource_type = tag_specifications.value["resource_type"]
+      tags = tag_specifications.value["tags"]
+    }
+  }
+  user_data = var.user_data
+}
+

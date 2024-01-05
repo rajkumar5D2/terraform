@@ -34,3 +34,27 @@ variable "health_check" {
     timeout = 5
     unhealthy_threshold = 3}
 }
+
+#for launch template
+variable "image_id" {
+  
+}
+
+variable "instance_initiated_shutdown_behavior" {
+  default = "terminate"
+}
+
+variable "instance_type" {
+  default = "t2.micro"
+}
+variable "vpc_security_group_ids" {
+
+}
+
+variable "launch_specification" {
+  default = []
+}
+
+variable "user_data" {
+  default = ""
+}

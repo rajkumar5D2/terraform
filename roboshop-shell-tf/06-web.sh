@@ -45,7 +45,7 @@ validate $? "moving to html dir"
 unzip /tmp/web.zip &>>LOGPATH
 validate $? "unzipping web.zip"
 
-cp /home/centos/Devops/roboshop-shell/roboshop.conf /etc/nginx/default.d/roboshop.conf  &>>LOGPATH
+cp /home/centos/Devops/terraform/roboshop-shell-tf/roboshop.conf /etc/nginx/default.d/roboshop.conf  &>>LOGPATH
 validate $? "copying roboshop.conf"
 
 systemctl restart nginx &>>LOGPATH

@@ -1,32 +1,32 @@
 #-----commenting here coz made a module in roboshop-template-app----------------
-# #creating a target group of catalogue
-# resource "aws_lb_target_group" "catalogue" {
-#   name        = "${var.project_name}-${var.common_tags.component}"
-#   # target_type = "alb"
-#   port        = 8080
-#   protocol    = "HTTP"
-#   vpc_id      = data.aws_ssm_parameter.vpc_id.value
-#   health_check {
-#     enabled = true
-#     healthy_threshold = 2
-#     interval = 15
-#     matcher = "200-299"
-#     path = "/health"
-#     port = 8080
-#     protocol = "HTTP"
-#     timeout = 5
-#     unhealthy_threshold = 3
-#   }
-# }
-module "target_group" {
-  source = "../../roboshop-template-app"
-  project_name = var.project_name
-   port        = var.port
-  protocol    = var.protocol
-  vpc_id      = var.vpc_id
-   common_tags = var.common_tags
-    health_check = var.health_check
+#creating a target group of catalogue
+resource "aws_lb_target_group" "catalogue" {
+  name        = "${var.project_name}-${var.common_tags.component}"
+  # target_type = "alb"
+  port        = 8080
+  protocol    = "HTTP"
+  vpc_id      = data.aws_ssm_parameter.vpc_id.value
+  health_check {
+    enabled = true
+    healthy_threshold = 2
+    interval = 15
+    matcher = "200-299"
+    path = "/health"
+    port = 8080
+    protocol = "HTTP"
+    timeout = 5
+    unhealthy_threshold = 3
+  }
 }
+# module "target_group" {
+#   source = "../../roboshop-template-app"
+#   project_name = var.project_name
+#    port        = var.port
+#   protocol    = var.protocol
+#   vpc_id      = data.aws_ssm_parameter.vpc_id.value
+#    common_tags = var.common_tags
+#     health_check = var.health_check
+# }
 
 
 #creating launch template
@@ -134,7 +134,8 @@ resource "aws_autoscaling_group" "catalogue" {
   desired_capacity          = 2
   # force_delete            = true
   # placement_group         = aws_placement_group.test.id
-  target_group_arns = [module.target_group.arn]
+  target_group_arns = [aws_lb_target_group.catalogue.arn]
+  # target_group_arns = [local.target_group_arn]
   launch_template  {
     id = aws_launch_template.catalogue.id
     version = "$Latest"
