@@ -85,3 +85,15 @@ type = list
 variable "tags" {
   default = []
 }
+
+#for listiner rule
+variable "lb_listener_arn" {
+
+}
+
+variable "rule_priority" {
+  
+}
+variable "host_header" {
+  
+}

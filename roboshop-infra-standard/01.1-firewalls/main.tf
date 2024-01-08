@@ -163,7 +163,7 @@ module "web-alb_sg" {
   protocol          = "tcp"
   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-  source_security_group_id = module.web-alb_sg.sg_id
+  source_security_group_id = module.web_sg.sg_id
   security_group_id = module.app-alb_sg.sg_id
 }
 

@@ -70,3 +70,45 @@ resource "aws_autoscaling_group" "main" {
 }
 }
 
+#creating a listener rule for the load balancer
+resource "aws_lb_listener_rule" "https" {
+listener_arn = var.lb_listener_arn
+  priority = var.rule_priority
+  
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.main.arn
+  }
+
+  condition {
+    host_header {
+      values = [var.host_header]
+    }
+  }
+  tags ={
+    Name = "https"
+  }
+
+}
+
+
+# #creating a listener rule for the load balancer
+# resource "aws_lb_listener_rule" "http" {
+# listener_arn = var.lb_listener_arn
+#   priority = var.rule_priority
+  
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.main.arn
+#   }
+
+#   condition {
+#     host_header {
+#       values = [var.host_header]
+#     }
+#   }
+#   tags ={
+#     Name = "http"
+#   }
+
+# }

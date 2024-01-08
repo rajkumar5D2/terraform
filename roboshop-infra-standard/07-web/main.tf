@@ -19,4 +19,14 @@ module "target_group" {
     #for auto-scalling groups
     vpc_zone_identifier = split(",",data.aws_ssm_parameter.private_subnet_ids.value)
     tags = var.auto_scalling_tags
+
+    #providing listener rule details for https listener
+    lb_listener_arn = data.aws_ssm_parameter.web-alb_listener_arn_https.value
+    rule_priority = 1
+    host_header = "mydomainproject.tech"   
+    #  #providing listener rule details for http listener
+    # lb_listener_arn = data.aws_ssm_parameter.web-alb_listener_arn_http.value
+    # rule_priority = 2
+    # host_header = "mydomainproject.tech"
+
 }
