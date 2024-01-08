@@ -154,6 +154,7 @@ module "web-alb_sg" {
   security_group_id = module.app-alb_sg.sg_id
 }
 
+
 # giving inbound rule i.e accepting all the traffic from web to app-alb 
  resource "aws_security_group_rule" "web_to_app-alb" {
   type              = "ingress"
@@ -208,6 +209,17 @@ module "web-alb_sg" {
   type              = "ingress"
   from_port         = 80 #(all alb runs on port 80)
   to_port           = 80
+  protocol          = "tcp"
+  # cidr_blocks       = ["0.0.0.0/0"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  source_security_group_id = module.vpn_sg.sg_id
+  security_group_id = module.web_sg.sg_id
+}
+# giving inbound rule i.e accepting all the traffic from roboshop-vpn to web
+ resource "aws_security_group_rule" "vpn_to_web_on22" {
+  type              = "ingress"
+  from_port         = 22 #(all alb runs on port 80)
+  to_port           = 22
   protocol          = "tcp"
   # cidr_blocks       = ["0.0.0.0/0"]
   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
