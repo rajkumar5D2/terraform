@@ -48,7 +48,7 @@ validate $? "unzipping user"
 npm install &>>LOGPATH
 validate $? "installing npm"
 
-cp /home/centos/Devops/roboshop-shell/user.service /etc/systemd/system/user.service &>>LOGPATH
+cp /home/centos/terraform/roboshop-shell-tf/user.service /etc/systemd/system/user.service &>>LOGPATH
 validate $? "copying .service file"
 
 systemctl daemon-reload &>>LOGPATH
@@ -60,11 +60,11 @@ validate $? "enable user"
 systemctl start user &>>LOGPATH
 validate $? "start user"
 
-cp /home/centos/Devops/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>>LOGPATH
+cp /home/centos/terraform/roboshop-shell-tf/mongo.repo /etc/yum.repos.d/mongo.repo &>>LOGPATH
 validate $? "mysql cli install"
 
 yum install mongodb-org-shell -y &>>LOGPATH
 validate $? "mysql install"
 
-mongo --host 18.212.244.44 </app/schema/user.js &>>LOGPATH
+mongo --host mongodb.mydomainproject.tech </app/schema/user.js &>>LOGPATH
 validate $? "done!!"

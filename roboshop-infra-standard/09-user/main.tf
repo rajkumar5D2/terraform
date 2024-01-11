@@ -21,7 +21,7 @@ module "user" {
     tags = var.auto_scalling_tags
 
     #providing listener rule details for https listener
-    lb_listener_arn = data.aws_ssm_parameter.app-alb_listener_arn_https.value
+    lb_listener_arn = data.aws_ssm_parameter.app-alb_listener_arn.value
     rule_priority = 20
     host_header = "user.app.mydomainproject.tech"   
     #  #providing listener rule details for http listener

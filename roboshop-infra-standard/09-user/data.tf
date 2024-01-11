@@ -31,8 +31,8 @@ data "aws_ssm_parameter" "private_subnet_ids" {
   name = "/${var.project_name}/${var.environment}/private_subnet_ids"
 }
 
-data "aws_ssm_parameter" "app-alb_listener_arn_https" {
-  name = "/${var.project_name}/${var.environment}/app-alb_listener_arn_https"
+data "aws_ssm_parameter" "app-alb_listener_arn" {
+  name = "/${var.project_name}/${var.environment}/app-alb_listener_arn"
 }
 
 # data "aws_ssm_parameter" "web-alb_listener_arn_http" {
