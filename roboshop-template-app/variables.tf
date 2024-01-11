@@ -26,7 +26,7 @@ variable "vpc_id" {
 variable "health_check" {
   default = {  enabled = true
     healthy_threshold = 2
-    interval = 15
+    interval = 120
     matcher = "200-299"
     path = "/health"
     port = 8080

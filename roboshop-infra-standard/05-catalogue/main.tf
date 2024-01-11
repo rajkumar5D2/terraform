@@ -9,13 +9,13 @@ resource "aws_lb_target_group" "catalogue" {
   health_check {
     enabled = true
     healthy_threshold = 2
-    interval = 15
+    interval = 300
     matcher = "200-299"
     path = "/health"
     port = 8080
     protocol = "HTTP"
     timeout = 5
-    unhealthy_threshold = 3
+    unhealthy_threshold = 5
   }
 }
 # module "target_group" {
