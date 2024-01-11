@@ -83,6 +83,39 @@ module "web-alb_sg" {
   })
  }
 
+  # creating redis security group--------------------------------
+module "redis_sg" {
+  source = "../../aws-security-group-module"
+  project_name = var.project_name
+  sg_name = "redis"
+  sg_description = "Allowing traffic"
+  #sg_ingress_rules = var.sg_ingress_rules
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  common_tags = merge(
+    var.common_tags,
+    {
+        Component = "redis",
+        Name = "redis"
+    }
+  )
+}
+
+module "user_sg" {
+  source = "../../aws-security-group-module"
+  project_name = var.project_name
+  sg_name = "user"
+  sg_description = "Allowing traffic"
+  #sg_ingress_rules = var.sg_ingress_rules
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  common_tags = merge(
+    var.common_tags,
+    {
+        Component = "user",
+        Name = "user"
+    }
+  )
+}
+
 
 
  resource "aws_security_group_rule" "vpn" {
@@ -178,19 +211,6 @@ module "web-alb_sg" {
   source_security_group_id = module.web-alb_sg.sg_id
   security_group_id = module.web_sg.sg_id
 }
-# # giving inbound rule i.e accepting all the traffic from web instance to web-alb 
-#  resource "aws_security_group_rule" "web_to_web-alb" {
-#   type              = "ingress"
-#   from_port         = 80 #(all alb runs on port 80)
-#   to_port           = 80
-#   protocol          = "tcp"
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   source_security_group_id = module.web_sg.sg_id
-#   security_group_id = module.web-alb_sg.sg_id
-# }
-
-
 # giving inbound rule i.e accepting all the traffic from internet (http) to web-alb
  resource "aws_security_group_rule" "interenet_to_web-alb" {
   type              = "ingress"
@@ -236,4 +256,52 @@ module "web-alb_sg" {
   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
   # source_security_group_id = module.vpn_sg.sg_id
   security_group_id = module.web-alb_sg.sg_id
+}
+
+# giving inbound rule i.e accepting all the traffic from user to redis
+ resource "aws_security_group_rule" "redis_user" {
+  type              = "ingress"
+  from_port         = 6379 #(all alb runs on port 80)
+  to_port           = 6379 #redis port no
+  protocol          = "tcp"
+  # cidr_blocks       = ["0.0.0.0/0"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  source_security_group_id = module.user_sg.sg_id
+  security_group_id = module.redis_sg.sg_id
+}
+
+# giving inbound rule i.e accepting all the traffic from roboshop-vpn to redis
+ resource "aws_security_group_rule" "vpn_to_redis" {
+  type              = "ingress"
+  from_port         = 22 
+  to_port           = 22
+  protocol          = "tcp"
+  # cidr_blocks       = ["0.0.0.0/0"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  source_security_group_id = module.vpn_sg.sg_id
+  security_group_id = module.redis_sg.sg_id
+}
+
+# giving inbound rule i.e accepting all the traffic from app-alb to user instances
+ resource "aws_security_group_rule" "app-alb_user" {
+  type              = "ingress"
+  from_port         = 8080 #(all alb runs on port 80)
+  to_port           = 8080
+  protocol          = "tcp"
+  # cidr_blocks       = ["0.0.0.0/0"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  source_security_group_id = module.app-alb_sg.sg_id
+  security_group_id = module.user_sg.sg_id
+}
+
+# giving inbound rule i.e accepting all the traffic from vpn to user instances
+ resource "aws_security_group_rule" "vpn_user" {
+  type              = "ingress"
+  from_port         = 22 #(all alb runs on port 80)
+  to_port           = 22
+  protocol          = "tcp"
+  # cidr_blocks       = ["0.0.0.0/0"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  source_security_group_id = module.vpn_sg.sg_id
+  security_group_id = module.user_sg.sg_id
 }
