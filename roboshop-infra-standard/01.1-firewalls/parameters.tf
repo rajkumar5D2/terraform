@@ -34,26 +34,15 @@ resource "aws_ssm_parameter" "app-alb_sg_id" {
   value = module.app-alb_sg.sg_id
 }
 
-resource "aws_ssm_parameter" "redis_user_sg_id" {
-  name = "/${var.project_name}/${var.environment}/redis_user_sg_id"
+
+resource "aws_ssm_parameter" "user_sg_id" {
+  name = "/${var.project_name}/${var.environment}/user_sg_id"
   type = "String"
-  value = module.redis_user.sg_id
+  value = module.user_sg.sg_id
 }
 
-resource "aws_ssm_parameter" "vpn_redis_sg_id" {
-  name = "/${var.project_name}/${var.environment}/vpn_redis_sg_id"
+resource "aws_ssm_parameter" "redis_sg_id" {
+  name = "/${var.project_name}/${var.environment}/redis_sg_id"
   type = "String"
-  value = module.vpn_to_redis.sg_id
-}
-
-resource "aws_ssm_parameter" "app-alb_user_sg_id" {
-  name = "/${var.project_name}/${var.environment}/app-alb_user_sg_id"
-  type = "String"
-  value = module.app-alb_user.sg_id
-}
-
-resource "aws_ssm_parameter" "vpn_user_sg_id" {
-  name = "/${var.project_name}/${var.environment}/vpn_user_sg_id"
-  type = "String"
-  value = module.vpn_user.sg_id
+  value = module.redis_sg.sg_id
 }
