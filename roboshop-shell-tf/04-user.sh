@@ -67,4 +67,5 @@ yum install mongodb-org-shell -y &>>LOGPATH
 validate $? "mysql install"
 
 mongo --host mongodb.mydomainproject.tech </app/schema/user.js &>>LOGPATH
+
 validate $? "done!!"

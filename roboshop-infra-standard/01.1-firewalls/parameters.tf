@@ -46,3 +46,9 @@ resource "aws_ssm_parameter" "redis_sg_id" {
   type = "String"
   value = module.redis_sg.sg_id
 }
+
+resource "aws_ssm_parameter" "cart_sg_id" {
+  name = "/${var.project_name}/${var.environment}/cart_sg_id"
+  type = "String"
+  value = module.cart_sg.sg_id
+}

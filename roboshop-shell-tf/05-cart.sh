@@ -48,7 +48,7 @@ validate $? "unzipping cart"
 npm install &>>LOGPATH
 validate $? "installing npm"
 
-cp /home/centos/Devops/roboshop-shell/cart.service /etc/systemd/system/cart.service &>>LOGPATH
+cp /home/centos/terraform/roboshop-shell-tf/cart.service /etc/systemd/system/cart.service &>>LOGPATH
 validate $? "copying .service file"
 
 systemctl daemon-reload &>>LOGPATH

@@ -99,6 +99,7 @@ module "redis_sg" {
     }
   )
 }
+  # creating user security group--------------------------------
 
 module "user_sg" {
   source = "../../aws-security-group-module"
@@ -115,8 +116,23 @@ module "user_sg" {
     }
   )
 }
+  # creating cart security group--------------------------------
 
-
+module "cart_sg" {
+  source = "../../aws-security-group-module"
+  project_name = var.project_name
+  sg_name = "cart"
+  sg_description = "Allowing traffic"
+  #sg_ingress_rules = var.sg_ingress_rules
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  common_tags = merge(
+    var.common_tags,
+    {
+        Component = "cart",
+        Name = "cart"
+    }
+  )
+}
 
  resource "aws_security_group_rule" "vpn" {
   type              = "ingress"
@@ -309,11 +325,23 @@ module "user_sg" {
 # giving inbound rule i.e accepting all the traffic from user to mongodb instances
  resource "aws_security_group_rule" "user_mongodb" {
   type              = "ingress"
-  from_port         = 8080 #(all alb runs on port 80)
-  to_port           = 8080
+  from_port         = 27017 #(all alb runs on port 80)
+  to_port           = 27017
   protocol          = "tcp"
   # cidr_blocks       = ["0.0.0.0/0"]
   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
   source_security_group_id = module.user_sg.sg_id
   security_group_id = module.mongodb_sg.sg_id
 }
+
+# # giving inbound rule i.e accepting all the traffic from user to mongodb instances
+#  resource "aws_security_group_rule" "mongodb_user" {
+#   type              = "ingress"
+#   from_port         = 8080 #(all alb runs on port 80)
+#   to_port           = 8080
+#   protocol          = "tcp"
+#   # cidr_blocks       = ["0.0.0.0/0"]
+#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+#   security_group_id = module.user_sg.sg_id
+#   source_security_group_id = module.mongodb_sg.sg_id
+# }
