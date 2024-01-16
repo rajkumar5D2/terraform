@@ -12,7 +12,7 @@ module "cart" {
 
     #for launch template
     image_id = data.aws_ami.ami_id.id
-    vpc_security_group_ids = data.aws_ssm_parameter.user_sg_id.value
+    vpc_security_group_ids = data.aws_ssm_parameter.cart_sg_id.value
     user_data = filebase64("${path.module}/cart.sh")
     launch_template_tags = var.launch_template_tags
 
@@ -23,5 +23,5 @@ module "cart" {
     #providing listener rule details for https listener
     lb_listener_arn = data.aws_ssm_parameter.app-alb_listener_arn.value
     rule_priority = 21
-    host_header = "user.app.mydomainproject.tech"   
+    host_header = "cart.app.mydomainproject.tech"   
 }
