@@ -89,7 +89,7 @@ module "catalogue_sg" {
 
 
 # giving inbound rule i.e accepting all the traffic from catalogue to alb
- resource "aws_security_group_rule" "catalogue_to_app-alb" {
+ resource "aws_security_group_rule" "app-alb_to_catalogue" {
   type              = "ingress"
   from_port         = 8080 #(catalogue port)
   to_port           = 8080
@@ -173,13 +173,37 @@ module "app-alb_sg" {
   security_group_id = module.app-alb_sg.sg_id
 }
 
+resource "aws_security_group_rule" "catalogue_to_app-alb" {
+  type              = "ingress"
+  description = "Allowing port number 80 from catalogue"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  source_security_group_id = module.catalogue_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.app-alb_sg.sg_id
+}
+
+resource "aws_security_group_rule" "user_to_app-alb" {
+  type              = "ingress"
+  description = "Allowing port number 80 from user"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  source_security_group_id = module.user_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.app-alb_sg.sg_id
+}
+
 resource "aws_security_group_rule" "app-alb_to_cart" {
   type              = "ingress"
   description = "Allowing port number 80 from APP ALB"
   from_port         = 80
   to_port           = 80
   protocol          = "tcp"
-  source_security_group_id = module.app-alb_sg.sg_id
+  source_security_group_id = module.cart_sg.sg_id
   security_group_id = module.app-alb_sg.sg_id
 }
   # creating web(public) application Load Balancer(ALB) security group------------------------------------------------------------------------------------------------
