@@ -120,15 +120,15 @@ module "web_sg" {
   security_group_id = module.web_sg.sg_id
 }
 
-# giving inbound rule i.e accepting all the traffic from roboshop-vpn to web
- resource "aws_security_group_rule" "vpn_to_web" {
-  type              = "ingress"
-  from_port         = 80 #(all alb runs on port 80)
-  to_port           = 80
-  protocol          = "tcp"
-  source_security_group_id = module.vpn_sg.sg_id
-  security_group_id = module.web_sg.sg_id
-}
+# # giving inbound rule i.e accepting all the traffic from roboshop-vpn to web
+#  resource "aws_security_group_rule" "vpn_to_web" {
+#   type              = "ingress"
+#   from_port         = 22 #(all alb runs on port 80)
+#   to_port           = 22
+#   protocol          = "tcp"
+#   source_security_group_id = module.vpn_sg.sg_id
+#   security_group_id = module.web_sg.sg_id
+# }
 
 # giving inbound rule i.e accepting all the traffic from roboshop-vpn to web
  resource "aws_security_group_rule" "vpn_to_web_on22" {
