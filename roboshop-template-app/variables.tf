@@ -13,7 +13,7 @@ variable "common_tags" {
   
 }
 variable "port" {
-  default = 80
+  default = 8080
 }
 variable "protocol" {
   default = "HTTP"
