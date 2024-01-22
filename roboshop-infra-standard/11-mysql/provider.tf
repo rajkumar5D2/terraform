@@ -1,18 +1,18 @@
 terraform{
-  required_providers {
+  required_providers{
     aws ={
       source  = "hashicorp/aws"
-      version = "~> 5.32"
+      version = "~> 5.0"
     }
   }
 
-  backend "s3" {
+  backend "s3"{
   bucket = "roboshop-adv"
-  key = "shipping"
+  key = "mysql"
   region = "us-east-1"
   dynamodb_table = "roboshop-adv-table"
   }
 }
-provider "aws" {
+provider "aws"{
   region = "us-east-1"
 }

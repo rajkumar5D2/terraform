@@ -356,3 +356,44 @@ resource "aws_security_group_rule" "vpn_to_cart" {
   source_security_group_id = module.vpn_sg.sg_id
   security_group_id = module.cart_sg.sg_id
 }
+
+#creating mysql security group-----------------------------------------------------------------------------------------------------------------
+module "mysql_sg" {
+  source = "../../aws-security-group-module"
+  project_name = var.project_name
+  sg_name = "mysql"
+  sg_description = "Allowing traffic"
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  common_tags = merge(
+    var.common_tags,
+    {
+        Component = "mysql",
+        Name = "mysql"
+    }
+  )
+}
+
+#giving inbound rules 
+resource "aws_security_group_rule" "vpn_to_mysql" {
+  type              = "ingress"
+  description = "Allowing port number 22 from vpn"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  source_security_group_id = module.vpn_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.mysql_sg.sg_id
+}
+
+# resource "aws_security_group_rule" "shipping_to_mysql" {
+#   type              = "ingress"
+#   description = "Allowing port number 3306 from vpn"
+#   from_port         = 3306
+#   to_port           = 3306
+#   protocol          = "tcp"
+#   source_security_group_id = module.shipping_sg.sg_id
+#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+#   security_group_id = module.mysql_sg.sg_id
+# }
