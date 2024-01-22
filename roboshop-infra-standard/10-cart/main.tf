@@ -22,6 +22,6 @@ module "cart" {
 
     #providing listener rule details for https listener
     lb_listener_arn = data.aws_ssm_parameter.app-alb_listener_arn.value
-    rule_priority = 21
+    rule_priority = 30
     host_header = "cart.app.mydomainproject.tech"   
 }
