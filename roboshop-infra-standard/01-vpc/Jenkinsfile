@@ -29,7 +29,10 @@ pipeline {
         }  
         stage('apply'){
             steps{
-                sh 'terraform apply -auto-approve'
+                sh '''
+                cd roboshop-infra-standard/01-vpc
+                terraform apply -auto-approve
+                '''
             }
         }
     }
