@@ -1,0 +1,40 @@
+pipeline {
+    agent { node {label 'agent-1'} }
+    options{
+        ansiColor('xterm')
+    }
+
+    stages {
+        stage('init') {
+            steps {
+              sh '''
+                cd roboshop-infra-standard/01.1-firewalls
+                pwd
+                terraform init
+              '''
+            }
+        }
+        stage('plan') {
+            steps {
+              sh ''' 
+                cd roboshop-infra-standard/01.1-firewalls
+                pwd
+                terraform plan
+              '''}
+        }    
+        stage('approve'){
+            steps{
+                input 'shall i approve?'
+            }
+        }  
+        stage('apply'){
+            steps{
+                sh '''
+                cd roboshop-infra-standard/01.1-firewalls
+                terraform apply -auto-approve
+                '''
+            }
+        }
+    }
+
+}
