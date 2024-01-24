@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('init') {
             steps {
-              sh ''' 
+              sh '''
+                cd roboshop-infra-standard/01-vpc 
                 pwd
                 terraform init
               '''
@@ -13,6 +14,7 @@ pipeline {
         stage('plan') {
             steps {
               sh ''' 
+                cd roboshop-infra-standard/01-vpc 
                 pwd
                 terraform plan
               '''}
