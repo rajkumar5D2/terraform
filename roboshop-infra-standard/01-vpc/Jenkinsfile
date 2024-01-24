@@ -21,7 +21,17 @@ pipeline {
                 pwd
                 terraform plan
               '''}
-        }      
+        }    
+        stage('approve'){
+            steps{
+                input 'shall i approve?'
+            }
+        }  
+        stage('apply'){
+            steps{
+                sh 'terraform apply -auto-approve'
+            }
+        }
     }
 
 }
