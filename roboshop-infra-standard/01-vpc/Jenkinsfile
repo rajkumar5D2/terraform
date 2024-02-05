@@ -31,7 +31,7 @@ pipeline {
             steps{
                 sh '''
                 cd roboshop-infra-standard/01-vpc
-                terraform destroy -auto-approve
+                terraform apply -auto-approve
                 '''
             }
         }
