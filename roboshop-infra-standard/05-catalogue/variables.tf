@@ -35,7 +35,7 @@ variable "health_check" {
     interval = 15
     matcher = "200-299"
     path = "/"
-    port = 80
+    port = 8080
     protocol = "HTTP"
     timeout = 5
     unhealthy_threshold = 3}
