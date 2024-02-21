@@ -386,6 +386,56 @@ module "mysql_sg" {
 #   security_group_id = module.mysql_sg.sg_id
 # }
 
+module "shipping_sg" {
+  source = "../../aws-security-group-module"
+  project_name = var.project_name
+  sg_name = "shipping"
+  sg_description = "Allowing traffic"
+  #sg_ingress_rules = var.sg_ingress_rules
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  common_tags = merge(
+    var.common_tags,
+    {
+        Component = "shipping",
+        Name = "shipping"
+    }
+  )
+}
+
+module "payment_sg" {
+  source = "../../aws-security-group-module"
+  project_name = var.project_name
+  sg_name = "payment"
+  sg_description = "Allowing traffic"
+  #sg_ingress_rules = var.sg_ingress_rules
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  common_tags = merge(
+    var.common_tags,
+    {
+        Component = "payment",
+        Name = "payment"
+    }
+  )
+}
+
+module "rabitmq_sg" {
+  source = "../../aws-security-group-module"
+  project_name = var.project_name
+  sg_name = "rabitmq"
+  sg_description = "Allowing traffic"
+  #sg_ingress_rules = var.sg_ingress_rules
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+  common_tags = merge(
+    var.common_tags,
+    {
+        Component = "rabitmq",
+        Name = "rabitmq"
+    }
+  )
+}
+
+
+
 
 #------------SIR'S INGRESS-----------------------------------------------------------------------------------
 resource "aws_security_group_rule" "vpn" {
