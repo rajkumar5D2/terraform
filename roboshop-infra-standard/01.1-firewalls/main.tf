@@ -496,7 +496,7 @@ resource "aws_security_group_rule" "mysql_shipping" {
   security_group_id = module.mysql_sg.sg_id
 }
 
-resource "aws_security_group_rule" "rabbitmq_payment" {
+resource "aws_security_group_rule" "rabitmq_payment" {
   type              = "ingress"
   description = "Allowing port number 5672 from payment"
   from_port         = 5672
@@ -505,10 +505,10 @@ resource "aws_security_group_rule" "rabbitmq_payment" {
   source_security_group_id = module.payment_sg.sg_id
   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-  security_group_id = module.rabbitmq_sg.sg_id
+  security_group_id = module.rabitmq_sg.sg_id
 }
 
-resource "aws_security_group_rule" "rabbitmq_vpn" {
+resource "aws_security_group_rule" "rabitmq_vpn" {
   type              = "ingress"
   description = "Allowing port number 22 from vpn"
   from_port         = 22
@@ -517,7 +517,7 @@ resource "aws_security_group_rule" "rabbitmq_vpn" {
   source_security_group_id = module.vpn_sg.sg_id
   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-  security_group_id = module.rabbitmq_sg.sg_id
+  security_group_id = module.rabitmq_sg.sg_id
 }
 
 
