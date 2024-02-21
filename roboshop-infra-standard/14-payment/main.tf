@@ -22,7 +22,7 @@ module "payment" {
 
     #providing listener rule details for https listener
     lb_listener_arn = data.aws_ssm_parameter.app-alb_listener_arn.value
-    rule_priority = 20
+    rule_priority = 50
     host_header = "payment.app.mydomainproject.tech"   
     #  #providing listener rule details for http listener
     # lb_listener_arn = data.aws_ssm_parameter.web-alb_listener_arn_http.value
