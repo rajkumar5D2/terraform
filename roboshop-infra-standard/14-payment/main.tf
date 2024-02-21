@@ -12,7 +12,7 @@ module "payment" {
 
     #for launch template
     image_id = data.aws_ami.ami_id.id
-    vpc_security_group_ids = data.aws_ssm_parameter.payment_sg_id.value
+    vpc_security_group_ids ="sg-0229582489f90de0b"
     user_data = filebase64("${path.module}/payments.sh")
     launch_template_tags = var.launch_template_tags
 
