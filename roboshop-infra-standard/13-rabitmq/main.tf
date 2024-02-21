@@ -3,7 +3,7 @@ module "rabitmq_instance" {
   ami = data.aws_ami.ami_id.id
   instance_type = "t2.micro"
   subnet_id = element(split(",",data.aws_ssm_parameter.database_subnet_ids.value),0)
-  vpc_security_group_ids =[data.aws_ssm_parameter.rabitmq_sg_id.value]
+  vpc_security_group_ids =["sg-048a6e4e4ad3c6e82"]
   user_data = file("rabitmq.sh")
   tags = merge(var.common_tags,{
     Name = "rabitmq"
