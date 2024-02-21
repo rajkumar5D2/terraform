@@ -9,7 +9,7 @@ terraform{
 
   backend "s3"{
   bucket = "roboshop-adv"
-  key = "rabirmq"
+  key = "rabitmq"
   region = "us-east-1"
   dynamodb_table = "roboshop-adv-table"
   }
