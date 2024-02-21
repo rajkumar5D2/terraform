@@ -484,41 +484,41 @@ resource "aws_security_group_rule" "mysql_vpn" {
   security_group_id = module.mysql_sg.sg_id
 }
 
-# resource "aws_security_group_rule" "mysql_shipping" {
-#   type              = "ingress"
-#   description = "Allowing port number 3306 from vpn"
-#   from_port         = 3306
-#   to_port           = 3306
-#   protocol          = "tcp"
-#   source_security_group_id = module.shipping_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.mysql_sg.sg_id
-# }
+resource "aws_security_group_rule" "mysql_shipping" {
+  type              = "ingress"
+  description = "Allowing port number 3306 from vpn"
+  from_port         = 3306
+  to_port           = 3306
+  protocol          = "tcp"
+  source_security_group_id = module.shipping_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.mysql_sg.sg_id
+}
 
-# resource "aws_security_group_rule" "rabbitmq_payment" {
-#   type              = "ingress"
-#   description = "Allowing port number 5672 from payment"
-#   from_port         = 5672
-#   to_port           = 5672
-#   protocol          = "tcp"
-#   source_security_group_id = module.payment_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.rabbitmq_sg.sg_id
-# }
+resource "aws_security_group_rule" "rabbitmq_payment" {
+  type              = "ingress"
+  description = "Allowing port number 5672 from payment"
+  from_port         = 5672
+  to_port           = 5672
+  protocol          = "tcp"
+  source_security_group_id = module.payment_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.rabbitmq_sg.sg_id
+}
 
-# resource "aws_security_group_rule" "rabbitmq_vpn" {
-#   type              = "ingress"
-#   description = "Allowing port number 22 from vpn"
-#   from_port         = 22
-#   to_port           = 22
-#   protocol          = "tcp"
-#   source_security_group_id = module.vpn_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.rabbitmq_sg.sg_id
-# }
+resource "aws_security_group_rule" "rabbitmq_vpn" {
+  type              = "ingress"
+  description = "Allowing port number 22 from vpn"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  source_security_group_id = module.vpn_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.rabbitmq_sg.sg_id
+}
 
 
 resource "aws_security_group_rule" "catalogue_vpn" {
@@ -593,53 +593,53 @@ resource "aws_security_group_rule" "cart_app_alb" {
   security_group_id = module.cart_sg.sg_id
 }
 
-# resource "aws_security_group_rule" "shipping_vpn" {
-#   type              = "ingress"
-#   description = "Allowing port number 22 from vpn"
-#   from_port         = 22
-#   to_port           = 22
-#   protocol          = "tcp"
-#   source_security_group_id = module.vpn_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.shipping_sg.sg_id
-# }
+resource "aws_security_group_rule" "shipping_vpn" {
+  type              = "ingress"
+  description = "Allowing port number 22 from vpn"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  source_security_group_id = module.vpn_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.shipping_sg.sg_id
+}
 
-# resource "aws_security_group_rule" "shipping_app_alb" {
-#   type              = "ingress"
-#   description = "Allowing port number 8080 from APP ALB"
-#   from_port         = 8080
-#   to_port           = 8080
-#   protocol          = "tcp"
-#   source_security_group_id = module.app-alb_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.shipping_sg.sg_id
-# }
+resource "aws_security_group_rule" "shipping_app_alb" {
+  type              = "ingress"
+  description = "Allowing port number 8080 from APP ALB"
+  from_port         = 8080
+  to_port           = 8080
+  protocol          = "tcp"
+  source_security_group_id = module.app-alb_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.shipping_sg.sg_id
+}
 
-# resource "aws_security_group_rule" "payment_vpn" {
-#   type              = "ingress"
-#   description = "Allowing port number 22 from vpn"
-#   from_port         = 22
-#   to_port           = 22
-#   protocol          = "tcp"
-#   source_security_group_id = module.vpn_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.payment_sg.sg_id
-# }
+resource "aws_security_group_rule" "payment_vpn" {
+  type              = "ingress"
+  description = "Allowing port number 22 from vpn"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  source_security_group_id = module.vpn_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.payment_sg.sg_id
+}
 
-# resource "aws_security_group_rule" "payment_app_alb" {
-#   type              = "ingress"
-#   description = "Allowing port number 22 from vpn"
-#   from_port         = 8080
-#   to_port           = 8080
-#   protocol          = "tcp"
-#   source_security_group_id = module.app-alb_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.payment_sg.sg_id
-# }
+resource "aws_security_group_rule" "payment_app_alb" {
+  type              = "ingress"
+  description = "Allowing port number 22 from vpn"
+  from_port         = 8080
+  to_port           = 8080
+  protocol          = "tcp"
+  source_security_group_id = module.app-alb_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.payment_sg.sg_id
+}
 
 
 resource "aws_security_group_rule" "app_alb_vpn" {
@@ -702,29 +702,29 @@ resource "aws_security_group_rule" "app_alb_cart" {
   security_group_id = module.app-alb_sg.sg_id
 }
 
-# resource "aws_security_group_rule" "app_alb_shipping" {
-#   type              = "ingress"
-#   description = "Allowing port number 80 from shipping"
-#   from_port         = 80
-#   to_port           = 80
-#   protocol          = "tcp"
-#   source_security_group_id = module.shipping_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.app-alb_sg.sg_id
-# }
+resource "aws_security_group_rule" "app_alb_shipping" {
+  type              = "ingress"
+  description = "Allowing port number 80 from shipping"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  source_security_group_id = module.shipping_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.app-alb_sg.sg_id
+}
 
-# resource "aws_security_group_rule" "app_alb_payment" {
-#   type              = "ingress"
-#   description = "Allowing port number 80 from payment"
-#   from_port         = 80
-#   to_port           = 80
-#   protocol          = "tcp"
-#   source_security_group_id = module.payment_sg.sg_id
-#   #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
-#   #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
-#   security_group_id = module.app-alb_sg.sg_id
-# }
+resource "aws_security_group_rule" "app_alb_payment" {
+  type              = "ingress"
+  description = "Allowing port number 80 from payment"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  source_security_group_id = module.payment_sg.sg_id
+  #cidr_blocks       = ["${chomp(data.http.myip.body)}/32"]
+  #ipv6_cidr_blocks  = [aws_vpc.example.ipv6_cidr_block]
+  security_group_id = module.app-alb_sg.sg_id
+}
 
 resource "aws_security_group_rule" "web_vpn" {
   type              = "ingress"
