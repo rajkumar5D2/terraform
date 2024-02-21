@@ -2,57 +2,64 @@ variable "project_name" {
   default = "roboshop"
 }
 
-variable "env" {
+variable "environment" {
   default = "dev"
 }
-
 variable "common_tags" {
   default = {
-    Project = "roboshop"
-    Component = "shipping"
-    Environment = "DEV"
-    Terraform = "true"
+    Name = "Roboshop"
+    component = "shipping"
+    terraform = true
   }
 }
 
-
-variable "target_group_port" {
-  default = 8080
+variable "port" {
+default = 8080
+}
+variable "protocol" {
+  default = "HTTP"
 }
 
+# variable "vpc_id" {
+#   default = ""
+# }
+
+# variable "health_check" { giving default helth checks in ../../roboshop-templete-app so dont need from here
+#   default = {  enabled = true
+#     healthy_threshold = 2
+#     interval = 300
+#     matcher = "200-299"
+#     path = "/"
+#     port = 80
+#     protocol = "HTTP"
+#     timeout = 5
+#     unhealthy_threshold = 3}
+# }
 
 variable "launch_template_tags" {
   default = [
     {
       resource_type = "instance"
-
       tags = {
         Name = "shipping"
       }
     },
-
     {
       resource_type = "volume"
-
       tags = {
         Name = "shipping"
       }
     }
-
   ]
 }
 
-variable "autoscaling_tags" {
+variable "auto_scalling_tags" {
   default = [
     {
-      key                 = "Name"
-      value               = "shipping"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Project"
-      value               = "Roboshop"
-      propagate_at_launch = true
+        key                 = "Name"
+        value               = "user"
+        propagate_at_launch = true
     }
+    
   ]
 }
